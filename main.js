@@ -118,27 +118,23 @@ function draw() {
     if (player.x < wall.x + wall.w &&
       player.x + player.w > wall.x &&
       player.y < wall.y + wall.h &&
-      player.y + player.w > wall.y) {
-      if (upPressed) {
-        if (player.y < wall.y + wall.h) {
-          player.dy -= player.a;
-          player.y += player.dy;
-        }
-      } else if (leftPressed) {
-        // if (player.x < wall.x + wall.w) {
-          // player.x = wall.x + wall.w;
-          player.dy -= player.a;
-          player.y += player.dy;
-        // }
-      } else if (rightPressed) {
-        // if (player.x + player.w > wall.x) {
-          player.x = wall.x - player.w;
-          player.y -= player.dy;
-        // }
+      player.y + player.w > wall.y) { 
+      if (player.y + player.h > wall.y) {
+        player.y = wall.y - player.h;
+      } else if (player.y < wall.y + wall.h) {
+        player.dy -= player.a;
+        player.y += player.dy;
+      } else if (player.x < wall.x + wall.w) {
+        player.x = wall.x + wall.w;
+        player.dy -= player.a;
+        player.y += player.dy;
+      } else if (player.x + player.w > wall.x) {
+        player.x = wall.x - player.w;
+        player.y -= player.dy;
       }
     }
-  }
-  
+}
+
   // DRAWING
   // Background
   ctx.fillStyle = "white";
@@ -166,6 +162,7 @@ document.addEventListener("keyup", keyupHandler);
 function keydownHandler(e) {
     //Check for keys pressed
   if (e.code === "ArrowUp") {
+      upPressed = true;
       player.dy = player.jumpSpeed;
     } else if (e.code === "ArrowLeft") {
       leftPressed = true;
