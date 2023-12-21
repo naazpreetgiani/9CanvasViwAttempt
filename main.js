@@ -115,25 +115,48 @@ function draw() {
 
   for (let i = 0; i < walls.length; i++) {
     let wall = walls[i];
+
     if (player.x < wall.x + wall.w &&
       player.x + player.w > wall.x &&
       player.y < wall.y + wall.h &&
-      player.y + player.w > wall.y) { 
-      if (player.y + player.h > wall.y) {
+      player.y + player.w > wall.y) {
+      if (upPressed) {
+        if (player.y + player.h > wall.y) {
+        player.y = wall.y + wall.h;
+        }
+      } else if (downPressed) {
+        if (player.y < wall.y + wall.h){
         player.y = wall.y - player.h;
-      } else if (player.y < wall.y + wall.h) {
-        player.dy -= player.a;
-        player.y += player.dy;
-      } else if (player.x < wall.x + wall.w) {
-        player.x = wall.x + wall.w;
-        player.dy -= player.a;
-        player.y += player.dy;
-      } else if (player.x + player.w > wall.x) {
-        player.x = wall.x - player.w;
-        player.y -= player.dy;
+        }
+      } else if (leftPressed) {
+        if (player.x < wall.x + wall.w) {
+          player.x = wall.x + wall.w;
+        }
+      } else if (rightPressed) {
+        if (player.x + player.w > wall.x) {
+          player.x = wall.x - player.w;
+        }
       }
     }
-}
+    // if (player.x < wall.x + wall.w &&
+    //   player.x + player.w > wall.x &&
+    //   player.y < wall.y + wall.h &&
+    //   player.y + player.w > wall.y) { 
+    //   if (player.y + player.h > wall.y) {
+    //     player.y = wall.y - player.h;
+    //   } else if (player.y < wall.y + wall.h) {
+    //     player.y -= player.a;
+    //     // player.y += player.dy;
+    //   } else if (player.x < wall.x + wall.w) {
+    //     player.x = wall.x + wall.w;
+    //     player.dy -= player.a;
+    //     player.y += player.dy;
+    //   } else if (player.x + player.w > wall.x) {
+    //     player.x = wall.x - player.w;
+    //     player.y -= player.dy;
+    //   }
+    }
+
 
   // DRAWING
   // Background
