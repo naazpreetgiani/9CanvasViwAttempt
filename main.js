@@ -13,7 +13,7 @@ let rightPressed = false;
 // Player Characteristics
 let player = {
   x: cnv.width / 2,
-  y: 565,
+  y: 650,
   w: 25,
   h: 25,
   dx: 5,
@@ -27,22 +27,40 @@ let player = {
 // Global Variables
 let walls = [];
 // Level 1 Walls
-walls.push({ x: 300, y: 250, w: 100, h: 20 });
-walls.push({ x: 500, y: 275, w: 200, h: 20 });
-walls.push({ x: 700, y: 200, w: 100, h: 20 });
-walls.push({ x: 900, y: 275, w: 200, h: 20 });
-walls.push({ x: 1100, y: 200, w: 100, h: 20 });
-walls.push({ x: 1300, y: 275, w: 200, h: 20 });
-walls.push({ x: 1500, y: 275, w: 200, h: 20 });
+walls.push({ x: 200, y: 500, w: 100, h: 20 });
+walls.push({ x: 450, y: 500, w: 100, h: 20 });
+walls.push({ x: 700, y: 500, w: 100, h: 20 });
+walls.push({ x: 950, y: 500, w: 100, h: 20 });
+walls.push({ x: 1200, y: 500, w: 100, h: 20 });
+walls.push({ x: 1450, y: 500, w: 100, h: 20 });
 
 // Level 2 Walls
-walls.push({ x: 200, y: 450, w: 100, h: 20 });
-walls.push({ x: 400, y: 475, w: 200, h: 20 });
-walls.push({ x: 600, y: 400, w: 100, h: 20 });
-walls.push({ x: 800, y: 475, w: 200, h: 20 });
-walls.push({ x: 1000, y: 400, w: 100, h: 20 });
-walls.push({ x: 1200, y: 475, w: 200, h: 20 });
-walls.push({ x: 1400, y: 475, w: 200, h: 20 });
+walls.push({ x: 50, y: 400, w: 100, h: 20 });
+walls.push({ x: 300, y: 400, w: 100, h: 20 });
+walls.push({ x: 550, y: 400, w: 100, h: 20 });
+walls.push({ x: 800, y: 400, w: 100, h: 20 });
+walls.push({ x: 1050, y: 400, w: 100, h: 20 });
+walls.push({ x: 1350, y: 400, w: 100, h: 20 });
+walls.push({ x: 1600, y: 400, w: 100, h: 20 });
+walls.push({ x: 1850, y: 400, w: 100, h: 20 });
+
+// Level 3 Walls
+walls.push({ x: 200, y: 300, w: 100, h: 20 });
+walls.push({ x: 450, y: 300, w: 100, h: 20 });
+walls.push({ x: 700, y: 300, w: 100, h: 20 });
+walls.push({ x: 950, y: 300, w: 100, h: 20 });
+walls.push({ x: 1200, y: 300, w: 100, h: 20 });
+walls.push({ x: 1450, y: 300, w: 100, h: 20 });
+
+// Level 4 Walls
+walls.push({ x: 50, y: 200, w: 100, h: 20 });
+walls.push({ x: 300, y: 200, w: 100, h: 20 });
+walls.push({ x: 550, y: 200, w: 100, h: 20 });
+walls.push({ x: 800, y: 200, w: 100, h: 20 });
+walls.push({ x: 1050, y: 200, w: 100, h: 20 });
+walls.push({ x: 1350, y: 200, w: 100, h: 20 });
+walls.push({ x: 1600, y: 200, w: 100, h: 20 });
+walls.push({ x: 1850, y: 200, w: 100, h: 20 });
 
 
 // Draw Function
@@ -83,15 +101,17 @@ function draw() {
     cnv.x = 0;
   }
 
- //Check if Player collides with any wall
-  // for (let i = 0; i <walls.length; i++) {
-  //   let wall = walls[i];
-  //   if (player.x < wall.x + wall.w && player.x + player.w > wall.x && player.y < wall.y + wall.h && player.y + player.h > wall.y) {
-  //     console.log(player.y);
-  //     player.y = wall.y - player.h;
-  //   }
-  // }
-
+  if (player.y < 0) {
+    player.y += jumpSpeed;
+  } else if (player.y + player.h > 650) {
+    player.y = 650;
+  }
+ 
+  if (player.y + 200 > 650) {
+    cnv.y = 250;
+  } else if (player.y - 200 < 0) {
+    cnv.y = 0;
+  }
 
   for (let i = 0; i < walls.length; i++) {
     let wall = walls[i];
@@ -100,21 +120,21 @@ function draw() {
       player.y < wall.y + wall.h &&
       player.y + player.w > wall.y) {
       if (upPressed) {
-        if (player.y + player.w > wall.y) {
-        player.y = wall.y + wall.h;
-        }
-      } else if (downPressed) {
-        if (player.y < wall.y + wall.h){
-        player.y = wall.y - player.w;
+        if (player.y < wall.y + wall.h) {
+          player.dy -= player.a;
+          player.y += player.dy;
         }
       } else if (leftPressed) {
-        if (player.x < wall.x + wall.w) {
-          player.x = wall.x + wall.w;
-        }
+        // if (player.x < wall.x + wall.w) {
+          // player.x = wall.x + wall.w;
+          player.dy -= player.a;
+          player.y += player.dy;
+        // }
       } else if (rightPressed) {
-        if (player.x + player.w > wall.x) {
+        // if (player.x + player.w > wall.x) {
           player.x = wall.x - player.w;
-        }
+          player.y -= player.dy;
+        // }
       }
     }
   }
@@ -137,9 +157,6 @@ function draw() {
 
   // Animation Loop
   requestAnimationFrame(draw);
-
-  // Constrain view and PLAYER at 0 and 1750
-  // view goes back to zero or stays at 1750
 }
 
 // Event Listeners & Handlers
@@ -149,7 +166,7 @@ document.addEventListener("keyup", keyupHandler);
 function keydownHandler(e) {
     //Check for keys pressed
   if (e.code === "ArrowUp") {
-      player.dy = -player.jumpSpeed;
+      player.dy = player.jumpSpeed;
     } else if (e.code === "ArrowLeft") {
       leftPressed = true;
     } else if (e.code === "ArrowRight") {
