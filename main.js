@@ -9,11 +9,12 @@ cnv.height = 400;
 
 let leftPressed = false;
 let rightPressed = false;
+let upPressed = false;
 
 // Player Characteristics
 let player = {
   x: cnv.width / 2,
-  y: 650,
+  y: 625,
   w: 25,
   h: 25,
   dx: 5,
@@ -102,9 +103,9 @@ function draw() {
   }
 
   if (player.y < 0) {
-    player.y += jumpSpeed;
+    player.y = player.jumpSpeed;
   } else if (player.y + player.h > 650) {
-    player.y = 650;
+    player.y = 625;
   }
  
   if (player.y + 200 > 650) {
@@ -119,33 +120,30 @@ function draw() {
     if (player.x < wall.x + wall.w &&
       player.x + player.w > wall.x &&
       player.y < wall.y + wall.h &&
-      player.y + player.w > wall.y) {
-      if (upPressed) {
-        if (player.y + player.h > wall.y) {
-        player.y = wall.y + wall.h;
-        }
-      } else if (downPressed) {
-        if (player.y < wall.y + wall.h){
+      player.y + player.w > wall.y) { 
+      if (player.y + player.h > wall.y) {
         player.y = wall.y - player.h;
-        }
-      } else if (leftPressed) {
-        if (player.x < wall.x + wall.w) {
-          player.x = wall.x + wall.w;
-        }
-      } else if (rightPressed) {
-        if (player.x + player.w > wall.x) {
-          player.x = wall.x - player.w;
-        }
+      } else if (player.y < wall.y + wall.h) {
+        player.y = player.jumpSpeed;
+        // player.y += player.dy;
+      } else if (player.x < wall.x + wall.w) {
+        player.x = wall.x + wall.w;
+        // player.y = player.jumpSpeed;
+      } else if (player.x + player.w > wall.x) {
+        player.x = wall.x - player.w;
+        // player.y = player.jumpSpeed;
       }
     }
+  }
     // if (player.x < wall.x + wall.w &&
     //   player.x + player.w > wall.x &&
     //   player.y < wall.y + wall.h &&
     //   player.y + player.w > wall.y) { 
     //   if (player.y + player.h > wall.y) {
     //     player.y = wall.y - player.h;
+    //     player.dy = 0;
     //   } else if (player.y < wall.y + wall.h) {
-    //     player.y -= player.a;
+    //     player.y = player.jumpSpeed;
     //     // player.y += player.dy;
     //   } else if (player.x < wall.x + wall.w) {
     //     player.x = wall.x + wall.w;
@@ -155,7 +153,7 @@ function draw() {
     //     player.x = wall.x - player.w;
     //     player.y -= player.dy;
     //   }
-    }
+
 
 
   // DRAWING
@@ -172,7 +170,7 @@ function draw() {
 
   // Draw Player
   ctx.fillStyle = player.color;
-  ctx.fillRect(player.x - cnv.x, player.y - cnv.y, player.w, player.h);
+  ctx.fillRect(player.x - cnv.x, player.y, player.w, player.h);
 
   // Animation Loop
   requestAnimationFrame(draw);
@@ -200,5 +198,8 @@ function keyupHandler(e) {
     leftPressed = false;
   } else if (e.code === "ArrowRight") {
     rightPressed = false;
-  } 
+  } else if (e.code === "ArrowUp") {
+    upPressed = false;
+    player.dy = 0;
+  }
 }
